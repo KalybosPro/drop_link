@@ -18,7 +18,7 @@ This plugin is available on Pub: [https://pub.dev/packages/drop_link](https://pu
 Add this to `dependencies` in your app's `pubspec.yaml`
 
 ```yaml
-drop_link: ^0.0.1
+drop_link: ^1.0.1
 ```
 
 ## Usage
