@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 100,
           width: 500,
           alignment: Alignment.center,
-          child: DropZone(
+          child: DropLinkZone(
             onDrop: (data) {
               debugPrint(data);
               setState(() {

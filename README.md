@@ -1,37 +1,26 @@
 # Drop Link
 
-Flutter plugin for Flutter Web.
+A Flutter Web plugin to handle drag-and-drop (files) into Flutter. If you're interested in drag-and-drop inside a Flutter app, check out other packages like dnd.
 
 
 * [Getting Started](#getting-started)
 * [Installation](#installation)
 * [Usage](#usage)
-* [Example App](https://github.com/thoshpathi/flutter_openmoney/tree/master/example)
+* [Example App](https://github.com/KalybosPro/drop_link/tree/main/example)
 
 ## Getting Started
 
-This flutter plugin is a wrapper around openmoney Android SDK.
-
-The following documentation is only focused on the wrapper around native Android SDK. To know more about our SDKs and how to link them within the projects, refer to the following documentation:
-
-**Android**: [https://github.com/eshantmittal/open-payment-android-aar](https://github.com/eshantmittal/open-payment-android-aar)
-
-To initiate payment `paymentToken` and `accessKey` are mandatory variables.
-`paymentToken` - Generated in server side. [Know more](https://docs.bankopen.com/reference/generate-token)
-`accessKey` - Get from openmoney dashboard
-
+This flutter plugin help to drop link in flutter web app.
 
 ## Installation
 
-This plugin is available on Pub: [https://pub.dev/packages/flutter_openmoney](https://pub.dev/packages/flutter_openmoney)
+This plugin is available on Pub: [https://pub.dev/packages/drop_link](https://pub.dev/packages/drop_link)
 
 Add this to `dependencies` in your app's `pubspec.yaml`
 
 ```yaml
-flutter_openmoney: ^0.0.1
+drop_link: ^0.0.1
 ```
-
-**Note for Android**: Make sure that the minimum API level for your app is 19 or higher.
 
 ## Usage
 
@@ -40,121 +29,91 @@ Sample code to integrate can be found in [example/lib/main.dart](example/lib/mai
 #### Import package
 
 ```dart
-import 'package:flutter_openmoney/flutter_openmoney.dart';
+import 'package:drop_link/drop_link.dart';
 ```
 
-#### Create FlutterOpenmoney instance
+#### Example
 
 ```dart
-_flutterOpenmoney = FlutterOpenmoney();
-```
+import 'package:dotted_border/dotted_border.dart';
+import 'package:drop_link/drop_link.dart';
+import 'package:flutter/material.dart';
 
-#### Attach event listeners
-
-The plugin uses event-based communication, and emits events when payment fails or succeeds.
-
-The event names are exposed via the constants `eventPaymentSuccess`, `eventPaymentError` from the `FlutterOpenmoney` class.
-
-Use the `on(String event, Function handler)` method on the `FlutterOpenmoney` instance to attach event listeners.
-
-```dart
-
-_flutterOpenmoney.on(FlutterOpenmoney.eventPaymentSuccess, _handlePaymentSuccess);
-_flutterOpenmoney.on(FlutterOpenmoney.eventPaymentError, _handlePaymentError);
-```
-
-The handlers would be defined somewhere as
-
-```dart
-
-void _handlePaymentSuccess(PaymentSuccessResponse response) {
-  // Do something when payment succeeds
+void main() {
+  runApp(const MyApp());
 }
 
-void _handlePaymentError(PaymentFailureResponse response) {
-  // Do something when payment fails
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Drop link zone',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(),
+    );
+  }
 }
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+   String? link;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Drop link zone"),
+      ),
+      body: Center(
+        child: Container(
+          height: 100,
+          width: 500,
+          alignment: Alignment.center,
+          child: DropLinkZone(
+            onDrop: (data) {
+              debugPrint(data);
+              setState(() {
+                link = data;
+              });
+            },
+            child: DottedBorder(
+              color: Colors.black.withOpacity(0.4),
+              strokeWidth: 2,
+              dashPattern: const [4, 2],
+              radius: const Radius.circular(3),
+              child: Container(
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: link!=null? Center(child: Text("$link")): Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Spacer(),
+                    ClipRRect(
+                      child:  Icon(Icons.link),
+                    ),
+                    Spacer(),
+                    Text("Drop your link here"),
+                    Spacer(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 ```
-
-To clear event listeners, use the `clear` method on the `FlutterOpenmoney` instance.
-
-```dart
-_flutterOpenmoney.clear(); // Removes all listeners
-```
-
-#### Setup options
-
-```dart
-var options = PaymentOptions('<ACCESS_KEY_HERE>', '<PAYMENT_TOKEN_HERE>', PaymentMode.sandbox);
-```
-
-
-#### Checkout
-
-```dart
-_flutterOpenmoney.initPayment(options.toMap());
-```
-
-## API
-
-#### initPayment(Map<String, String> options)
-
-The `options` is instance of `PaymentOptions` class 
-The `options` has `paymentToken` and `accessKey` as a required property
-Convert `options` to Map object using `options.toMap()` method 
-
-
-#### on(String eventName, Function listener)
-
-Register event listeners for payment events.
-
-- `eventName`: The name of the event.
-- `listener`: The function to be called. The listener should accept a single argument of the following type:
-  - [`PaymentSuccessResponse`](#paymentsuccessresponse) for `eventPaymentSuccess`
-  - [`PaymentFailureResponse`](#paymentfailureresponse) for `eventPaymentError`
-
-#### clear()
-
-Clear all event listeners.
-
-
-#### Error Codes
-
-The error codes have been exposed as integers by the `FlutterOpenmoney` class.
-
-The error code is available as the `code` field of the `PaymentFailureResponse` instance passed to the callback.
-
-| Error Code        | Description                                                          |
-| ----------------- | -------------------------------------------------------------------- |
-| invalidOptions   | An issue with options passed in `FlutterOpenmoney.initPayment`                      |
-| paymentCancelled | User cancelled the payment                                           |
-| paymentFailed    | Payment process failed                      |
-| unknownError     | An unknown error occurred.                                           |
-
-
-#### Event names
-
-The event names have also been exposed as Strings by the `Razorpay` class.
-
-| Event Name            | Description                      |
-| --------------------- | -------------------------------- |
-| eventPaymentSuccess | The payment was successful.      |
-| eventPaymentError   | The payment was not successful.  |
-
-
-### PaymentSuccessResponse
-
-| Field Name | Type   | Description                                                                                  |
-| ---------- | ------ | -------------------------------------------------------------------------------------------- |
-| paymentId  | String | The ID for the payment.                                                                      |
-| paymentTokenId | String | The payment token id.                              |
-
-To confirm payment details refer this link [https://docs.bankopen.com/reference/status-check-api-with-token-id](https://docs.bankopen.com/reference/status-check-api-with-token-id)
-
-### PaymentFailureResponse
-
-| Field Name | Type   | Description        |
-| ---------- | ------ | ------------------ |
-| code       | int    | The error code.    |
-| message    | String | The error message. |
-

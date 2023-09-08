@@ -7,14 +7,14 @@ import 'dispatcher.dart';
 
 typedef VoidCallback<T> = void Function(T);
 
-class DropZone extends StatefulWidget {
+class DropLinkZone extends StatefulWidget {
   final Widget child;
   final void Function()? onDragEnter;
   final void Function()? onDragExit;
 
   final VoidCallback<String>? onDrop;
 
-  const DropZone({
+  const DropLinkZone({
     required this.child,
     Key? key,
     this.onDrop,
@@ -23,10 +23,10 @@ class DropZone extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => DropZoneState();
+  State<StatefulWidget> createState() => DropLinkZoneState();
 }
 
-class DropZoneState extends State<DropZone> {
+class DropLinkZoneState extends State<DropLinkZone> {
   late int id;
   bool _dragInBounds = false;
 
