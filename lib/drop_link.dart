@@ -1,7 +1,4 @@
 library drop_link;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'package:drop_link/src/dispatcher.dart';
+export 'package:drop_link/src/drop_zone.dart';
