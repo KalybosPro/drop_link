@@ -117,3 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 ```
+#### Screenshots
+
+<img src="https://github.com/KalybosPro/drop_link/blob/main/Capture%20web_8-9-2023_13262_localhost.jpeg" height="500px"/>
+<img src="https://github.com/KalybosPro/drop_link/blob/main/Capture%20web_8-9-2023_133143_localhost.jpeg" height="500px"/>

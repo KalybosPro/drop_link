@@ -1,3 +1,3 @@
 ## 1.0.0
 
-* initial version.
+* This version can work for Flutter web app only.
