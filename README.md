@@ -2,7 +2,6 @@
 
 A Flutter Web plugin to handle drag-and-drop (files) into Flutter. If you're interested in drag-and-drop inside a Flutter app, check out other packages like dnd.
 
-
 * [Getting Started](#getting-started)
 * [Installation](#installation)
 * [Usage](#usage)
